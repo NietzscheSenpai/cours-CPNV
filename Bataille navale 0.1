@@ -1,0 +1,38 @@
+/**
+ * \file      main.c
+ * \author    Tiyangou Quentin
+ * \version   <0.1>
+ * \date      <10-12-2020>
+ * \brief     <menu>
+ *
+ * \details    <création du menu>
+ */
+#include <stdio.h>
+
+
+int main() {
+
+    int selectionplayer, erreur;//setting variables
+
+    printf("Bienvenu dans la bataille Navale!\n\n");
+    printf("selectionner:\n\n\n\n");
+    printf("1. Jouer\n");
+    printf("2. Instruction\n");
+    printf("3. Scores\n");
+    printf("4. S'enrengistrer\n");
+    printf("5. quitter\n");
+    scanf("%d", &selectionplayer);//take player selection
+    switch (selectionplayer) {
+        case 1://jouer
+        case 2://instructions
+        case 3://affiche le tableau des scores
+        case 4://permet au joueur de s'identifier
+        case 5://ferme le programme
+        default:
+            printf("Erreur! veuillez reessayer!\n");
+            erreur = 1;//if value false back to player selection
+
+
+    }
+    return 0;
+}
