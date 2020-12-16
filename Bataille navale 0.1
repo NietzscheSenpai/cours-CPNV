@@ -2,64 +2,111 @@
  * \file      main.c
  * \author    Tiyangou Quentin
  * \version   <0.1>
- * \date      <10-12-2020>
- * \brief     <menu>
+ * \date      <17-12-2020>
+ * \brief     <bataille navale vers 0.1>
  *
- * \details    <création du menu>
+ * \details    <modification de la bataille navale>
  */
 #include <stdio.h>
+#include <windows.h>
 
+#pragma execution_character_set("utf-8")
 
-int main() {
+void main() {
+    SetConsoleOutputCP(65001);//affichage des charatères spéciaux
 
     int selectionplayer, erreur;//setting variables
+    int coord1, coord2, cible, tir, bateau1, bateau2, bateau3, bateau4, bateaux;//variables
 
     printf("Bienvenu dans la bataille Navale!\n\n");
     printf("selectionner:\n\n\n\n");
     printf("1. Jouer\n");
-    
+
     printf("2. Instruction\n");
     printf("3. Scores\n");
     printf("4. S'enrengistrer\n");
     printf("5. quitter\n");
-    scanf("%d", &selectionplayer);//take player selection
+    scanf("%d", &selectionplayer);
+    //take player selection
     switch (selectionplayer) {
-        case 1:{//jouer
-        int main() {
-    int casej1, casej2, casejoueur, bateaux, A, B, C, D, E, F, G, H, I, J;//variables
-    printf("      A  B  C  D  E  F  G  H  I  J  ");
-    int grille[10][10] =0;//grid
+        case 1: {//jouer
+            system("cls");
+            printf("      A  B  C  D  E  F  G  H  I  J  ");
+            int grille[9][9] = {{0, 4, 4, 4, 4, 0, 0, 0, 0, 0},
+                                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 0, 0, 0, 0, 2, 2, 0, 0, 0},
+                                {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                                {0, 0, 3, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 0, 3, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 0, 3, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+            };//grille
 
-    for (int i = 1; i < 11; i++) {//numbers axis x
-        printf("\n%5.d", i);
-    }
-    scanf("%d %c", &casej1, &casej2);
-    A = 1, B = 2, C = 3, D = 4, E = 5, F = 6, G = 7, H = 8, I = 9, J = 10;
 
 
-    switch (bateaux) {
-        case 1:
-            (grille= grille[5][3]); //where the boat is
-            printf("Touche beau-jeu");
-        case 2:
-            (casejoueur = grille[7][1]); //where the boat is
-            printf("Touche beau-jeu");
-        default:
-            printf("t'es mauvais");
-            break;
-    }
+            for (int i = 1; i <= 10; i++) {//numbers axis x
+                printf("\n%5.d", i);
+            }
 
-}
-}
+
+            printf("\ninsérer des coordonnées:");
+            scanf("%s %d", &coord1, &coord2 - 1);
+
+
+            switch (coord1) {//convert character to number
+                case 'a':
+                    coord1 = 1;
+                    break;
+                case 'b':
+                    coord1 = 2;
+                    break;
+                case 'c':
+                    coord1 = 3;
+                    break;
+                case 'd':
+                    coord1 = 4;
+                    break;
+                case 'e':
+                    coord1 = 5;
+                    break;
+                case 'f':
+                    coord1 = 6;
+                    break;
+                case 'g':
+                    coord1 = 7;
+                    break;
+                case 'h':
+                    coord1 = 8;
+                    break;
+                case 'i':
+                    coord1 = 9;
+                    break;
+                case 'j':
+                    coord1 = 10;
+                    break;
+            }
+
+            if (grille[coord1][coord2] != 0) {
+                printf("touché!");
+            } else { printf("plouf!"); }
+
+
+        }break;
         case 2://instructions
+            break;
         case 3://affiche le tableau des scores
+            break;
         case 4://permet au joueur de s'identifier
+            break;
         case 5://ferme le programme
+            break;
         default:
             printf("Erreur! veuillez reessayer!\n");
             erreur = 1;//if value false back to player selection
-
+            break;
 
     }
-    return 0;
+
 }
