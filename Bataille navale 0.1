@@ -17,7 +17,15 @@ int main() {
     printf("Bienvenu dans la bataille Navale!\n\n");
     printf("selectionner:\n\n\n\n");
     printf("1. Jouer\n");
-    int main() {
+    
+    printf("2. Instruction\n");
+    printf("3. Scores\n");
+    printf("4. S'enrengistrer\n");
+    printf("5. quitter\n");
+    scanf("%d", &selectionplayer);//take player selection
+    switch (selectionplayer) {
+        case 1:{//jouer
+        int main() {
     int casej1, casej2, casejoueur, bateaux, A, B, C, D, E, F, G, H, I, J;//variables
     printf("      A  B  C  D  E  F  G  H  I  J  ");
     int grille[10][10] =0;//grid
@@ -42,14 +50,7 @@ int main() {
     }
 
 }
-
-    printf("2. Instruction\n");
-    printf("3. Scores\n");
-    printf("4. S'enrengistrer\n");
-    printf("5. quitter\n");
-    scanf("%d", &selectionplayer);//take player selection
-    switch (selectionplayer) {
-        case 1://jouer
+}
         case 2://instructions
         case 3://affiche le tableau des scores
         case 4://permet au joueur de s'identifier
