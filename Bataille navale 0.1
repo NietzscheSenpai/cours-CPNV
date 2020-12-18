@@ -20,6 +20,7 @@
 
 #include <windows.h>
 
+#include <time.h>
 
 #pragma execution_character_set("utf-8")
 
@@ -34,144 +35,132 @@ void emptyBuffer() {
 //variables
 int selectionplayer, erreur;//setting variables
 
-int coord2 = 0, cible, tir, bateau1, bateau2, bateau3, bateau4, bateaux, end = 0;//variables
+int coord2 = 0, end = 0;//variables
 char coord1 = '0';
 
 //fonctions
 
-void endgame(int grille[10][10]){
-int compteur=0;
+void shoot() {
+
+    char tir[3]; //shoot value
+    int verif = 0; //entry value verification
+    int coord1; //ligne value
+    int coord2; //row value
+    int MaxTour, tour = 0, hit1=0, win, MaxGrille, grille[coord1][coord2];
+
+    while (verif != 1) {
+        printf("Choisir une case : ");
+        scanf("%s", &tir);
+        printf("%d\n", strlen(tir));
+
+        if (tir[0] <= 106 && tir[0] >= 97) {
+            tir[0] -= 32;
+        }
+
+        if (strlen(tir) == 3) {
+            coord1 = 10 * (tir[1] - 49) + (tir[2] - 49) + 10;  //changes the player's value
+        } else {
+            coord1 = tir[1] - 49;
+        }
+        coord2 = tir[0] - 65;
+
+        while (coord1 < 0 || coord1 > 9 || coord2 < 0 || coord2 > 9 || strlen(tir) > 3) { //value unknown
+            printf("\nIl n'y a pas de case ici\n\n");
+            printf("Choisir une case : ");
+            scanf("%s", &tir);
+
+            if (tir[0] <= 106 && tir[0] >= 97) {
+                tir[0] -= 32;
+            }
+
+            if (strlen(tir) == 3) {
+                coord1 = 10 * (tir[1] - 49) + (tir[2] - 49) + 10;
+            } else {
+                coord1 = tir[1] - 49;
+            }
+            coord2 = tir[0] - 65;
+        }
+
+
+        if (grille[coord1][coord2] < 10 && grille[coord1][coord2] > 0) {    //touché
+            system("cls");
+            printf("\nTouché");
+            grille[coord1][coord2] = grille[coord1][coord2] + 10;
+            verif = 1;
+            if (MaxTour - tour == 1) {
+                tour += 2;
+            } else {
+                tour += 1;
+            }
+
+        } else {//Plouf
+            system("cls");
+            printf("\nPlouf");
+            grille[coord1][coord2] = 100;
+            verif = 1;
+            if (MaxTour - tour == 1) {
+                tour += 2;
+            } else {
+                tour += 1;
+            }
+        }
+    }
+
+}
+
+void endgame(int grille[10][10]) {
+    int compteur = 0;
 //victory condition
     for (int i = 0; i <= 9; ++i) {
         for (int j = 0; j <= 9; ++j) {
-            if (grille[i][j]>0 && grille[i][j]<10){
-              compteur++;
+            if (grille[i][j] > 0 && grille[i][j] < 10) {
+                compteur++;
 
             }
         }
 
     }
-    if (compteur=0){printf("Bien Joué tu as Gagné");}
-    else{printf("Meh Loser");}
+    if (compteur = 0) { printf("Bien Joué tu as Gagné"); }
+    else { printf("\nMeh Loser\n"); }
 
 
 }
 
-void affichage(int grille[10][10]) {
+void affichage(grille[10][10]) {
 
 
-        system("cls");
-        printf("      A  B  C  D  E  F  G  H  I  J  ");
+    system("cls");
+    printf("      A  B  C  D  E  F  G  H  I  J  ");
 
-        for (int i = 0; i <= 9; i++) {//numbers axis y
+    for (int i = 0; i <= 9; i++) {//numbers axis y
 
-            printf("\n%5.d", i-1);
-
-
-            for (int l = 0; l <= 9; ++l) {//displays the grid
-                if (grille[i][l] > 10) {
-                 printf(" 0 ");
-                } else if (grille[i][l] <= 101) {
-                printf(" X ");
-                }
+        printf("\n%5.d", i + 1);
 
 
+        for (int l = 0; l <= 9; ++l) {//displays the grid
+            if (grille[i][l] > 10) {
+                //  printf(" 0 ");
+                printf(" %d ", grille[i][l]);
+            } else if (grille[i][l] <= 101) {
+                // printf(" X ");
+                printf(" %d ", grille[i][l]);
             }
+
 
         }
 
-
     }
+
+
+}
 
 
 //jeu
 void play(int grille[10][10]) {
 
 
-    for (int p = 0; p <= 10; ++p) {//numbers of turn set to 10
 
-        printf("\ninsérer des coordonnées:");
-        emptyBuffer();
-        scanf("%c %d", &coord1, &coord2 - 1);//recieve the coordinates
-        switch (coord1) {//convert character to number
-
-            case 'a':
-
-                coord1 = 1;
-
-                break;
-
-            case 'b':
-
-                coord1 = 2;
-
-                break;
-
-            case 'c':
-
-                coord1 = 3;
-
-                break;
-
-            case 'd':
-
-                coord1 = 4;
-
-                break;
-
-            case 'e':
-
-                coord1 = 5;
-
-                break;
-
-            case 'f':
-
-                coord1 = 6;
-
-                break;
-
-            case 'g':
-
-                coord1 = 7;
-
-                break;
-
-            case 'h':
-
-                coord1 = 8;
-
-                break;
-
-            case 'i':
-
-                coord1 = 9;
-
-                break;
-
-            case 'j':
-
-                coord1 = 10;
-
-                break;
-
-        }
-
-        if (grille[coord1][coord2] != 0) {
-
-            printf("\ntouché!\n");
-            grille[coord1][coord2] = 1;
-        } else {
-
-            printf("\nplouf!\n");
-            grille[coord1][coord2] = 0;
-
-        }
-
-        grille[coord1][coord2] = +100;
-
-        affichage(grille);
-    }
+    affichage(grille);
     endgame(grille);
     printf("fin de la partie");
 
@@ -200,7 +189,7 @@ void initialisation() {
     };//grille
     affichage(grille);
     play(grille);
-}
+ }
 
 void main() {
 
