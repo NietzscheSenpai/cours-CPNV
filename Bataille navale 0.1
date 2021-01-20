@@ -6,9 +6,9 @@
 
 * \version   <0.1>
 
-* \date      <18-12-2020>
+* \date      <20-01-2021>
 
-* \brief     <bataille navale vers 0.1>
+* \brief     <bataille navale vers 1.0>
 
 *
 
@@ -17,10 +17,9 @@
 */
 
 #include <stdio.h>
-
+#include <time.h>
 #include <windows.h>
 
-#include <time.h>
 
 #pragma execution_character_set("utf-8")
 
@@ -33,79 +32,80 @@ void emptyBuffer() {
 
 
 //variables
-int selectionplayer, erreur;//setting variables
+int selectionplayer, erreur, playername;//setting variables
 
-int coord2 = 0, end = 0;//variables
-char coord1 = '0';
+int choixlettre = '0', end = 0;//variables
+
 
 //fonctions
+int letter() {
+    printf("\ninsérer des coordonnées:");
+    char choixlettre = '0';
+    scanf("%c", &choixlettre);//recieve the coordinates
+    switch (choixlettre) {//convert character to number
+        case 'a':
 
-void shoot() {
+            choixlettre = 1;
 
-    char tir[3]; //shoot value
-    int verif = 0; //entry value verification
-    int coord1; //ligne value
-    int coord2; //row value
-    int MaxTour, tour = 0, hit1=0, win, MaxGrille, grille[coord1][coord2];
+            break;
 
-    while (verif != 1) {
-        printf("Choisir une case : ");
-        scanf("%s", &tir);
-        printf("%d\n", strlen(tir));
+        case 'b':
 
-        if (tir[0] <= 106 && tir[0] >= 97) {
-            tir[0] -= 32;
-        }
+            choixlettre = 2;
 
-        if (strlen(tir) == 3) {
-            coord1 = 10 * (tir[1] - 49) + (tir[2] - 49) + 10;  //changes the player's value
-        } else {
-            coord1 = tir[1] - 49;
-        }
-        coord2 = tir[0] - 65;
+            break;
 
-        while (coord1 < 0 || coord1 > 9 || coord2 < 0 || coord2 > 9 || strlen(tir) > 3) { //value unknown
-            printf("\nIl n'y a pas de case ici\n\n");
-            printf("Choisir une case : ");
-            scanf("%s", &tir);
+        case 'c':
 
-            if (tir[0] <= 106 && tir[0] >= 97) {
-                tir[0] -= 32;
-            }
+            choixlettre = 3;
 
-            if (strlen(tir) == 3) {
-                coord1 = 10 * (tir[1] - 49) + (tir[2] - 49) + 10;
-            } else {
-                coord1 = tir[1] - 49;
-            }
-            coord2 = tir[0] - 65;
-        }
+            break;
 
+        case 'd':
 
-        if (grille[coord1][coord2] < 10 && grille[coord1][coord2] > 0) {    //touché
-            system("cls");
-            printf("\nTouché");
-            grille[coord1][coord2] = grille[coord1][coord2] + 10;
-            verif = 1;
-            if (MaxTour - tour == 1) {
-                tour += 2;
-            } else {
-                tour += 1;
-            }
+            choixlettre = 4;
 
-        } else {//Plouf
-            system("cls");
-            printf("\nPlouf");
-            grille[coord1][coord2] = 100;
-            verif = 1;
-            if (MaxTour - tour == 1) {
-                tour += 2;
-            } else {
-                tour += 1;
-            }
-        }
+            break;
+
+        case 'e':
+
+            choixlettre = 5;
+
+            break;
+
+        case 'f':
+
+            choixlettre = 6;
+
+            break;
+
+        case 'g':
+
+            choixlettre = 7;
+
+            break;
+
+        case 'h':
+
+            choixlettre = 8;
+
+            break;
+
+        case 'i':
+
+            choixlettre = 9;
+
+            break;
+
+        case 'j':
+
+            choixlettre = 10;
+
+            break;
+
     }
 
+    void play();
 }
 
 void endgame(int grille[10][10]) {
@@ -120,13 +120,13 @@ void endgame(int grille[10][10]) {
         }
 
     }
-    if (compteur = 0) { printf("Bien Joué tu as Gagné"); }
-    else { printf("\nMeh Loser\n"); }
+    if (compteur <= 20) { printf("Bien Joué tu as Gagné"); }
+    else { printf("Meh Loser"); }
 
 
 }
-
-void affichage(grille[10][10]) {
+//grid display
+void affichage(int grille[10][10]) {
 
 
     system("cls");
@@ -138,50 +138,70 @@ void affichage(grille[10][10]) {
 
 
         for (int l = 0; l <= 9; ++l) {//displays the grid
-            if (grille[i][l] > 10) {
-                //  printf(" 0 ");
-                printf(" %d ", grille[i][l]);
-            } else if (grille[i][l] <= 101) {
-                // printf(" X ");
-                printf(" %d ", grille[i][l]);
+            if (grille[i][l] < 10) {
+                printf(" 0 ");
+            } else if (grille[i][l] >= 101) {
+                printf(" X ");
             }
-
 
         }
 
     }
-
 
 }
 
 
 //jeu
 void play(int grille[10][10]) {
+    int compteur = 0;
+    do {
+        int Choixchiffre = 0;
+        int Choixlettre = 0;
+        system("cls");
+        affichage(grille);
+        printf("\n");
+        printf("\n");
+
+        Choixlettre = letter();
+
+        printf("\nEntrez un chiffre: ");
+        scanf("%d", &Choixchiffre); //gets the player's coordinate
+        Choixchiffre = Choixchiffre - 1;
+
+        if (grille[Choixlettre][Choixchiffre] > 1 &&
+            grille[Choixlettre][Choixchiffre] < 100) { //add value to the selected coordinate
+            grille[Choixlettre][Choixchiffre] = 0;
+        }
+        if (grille[Choixlettre][Choixchiffre] == 1 ) {
+            grille[Choixlettre][Choixchiffre] = 100;
+        }
+        compteur++;
+    } while (compteur >= 20);
 
 
 
-    affichage(grille);
+
     endgame(grille);
-    printf("fin de la partie");
-
+    printf("\nfin de la partie");
 }
 
+
 void initialisation() {
-    int grille[10][10] = {{0, 4, 4, 4, 4, 0, 0, 0, 0, 0},//set the boats on grille
+    int grille[10][10] = {{0, 1, 1, 1, 1, 0, 0, 0, 0, 0},//set the boats on grille
 
                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 
                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 
-                          {0, 0, 0, 0, 0, 2, 2, 0, 0, 0},
+                          {0, 0, 0, 0, 0, 1, 1, 0, 0, 0},
 
-                          {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                          {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 
-                          {0, 0, 3, 0, 0, 0, 0, 0, 0, 0},
+                          {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
 
-                          {0, 0, 3, 0, 0, 0, 0, 0, 0, 0},
+                          {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
 
-                          {0, 0, 3, 0, 0, 0, 0, 0, 0, 0},
+                          {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
 
                           {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 
@@ -189,13 +209,12 @@ void initialisation() {
     };//grille
     affichage(grille);
     play(grille);
- }
+}
 
 void main() {
 
     SetConsoleOutputCP(65001);//displays special characters
     setbuf(stdout, 0);
-
 
     printf("Bienvenu dans la bataille Navale!\n\n");
     do {
@@ -214,56 +233,72 @@ void main() {
         scanf("%d", &selectionplayer); //take player selection
         system("cls");//clears console
 
-
         switch (selectionplayer) {//menu
 
             case 1: {//jouer
                 initialisation();
                 emptyBuffer();
-                printf("continuer de jouer?"
-                       "oui=0/non=1");
+                printf("\ncontinuer de jouer?"
+                       "\noui=0/non=1");
 
                 scanf("%d", &end);
                 break;
 
                 case 2://instructions
-                    printf("\nentrer une coordonnée comme suit: <lettre minuscule> entrée <numéro> pour tirer."
-                           "\nle joueur gagne quand les 4 bateaux sont coulés en mois de 10 essais");
-                printf("\nquitter=1 / retourner au menu =0");
+                    printf("\nentrer une coordonnée comme suit: <lettre minuscule> enter <numéro> pour tirer."
+                           "\nle joueur gagne quand les 4 bateaux sont coulés");
+                printf("\nretourner au menu =0\n"
+                       "commencer une partie=1\n"
+                       "quitter =5\n");
                 emptyBuffer();
                 scanf("&d", &end);
 
                 break;
 
                 case 3:
-                    printf("tableau des scores(in progress)");//affiche le tableau des scores
+                    printf("\nVoici le Tableau des score!\n\n");
 
+                FILE *fp;
+                char str[MAXCHAR];
+                char *filename = "c:\\users\\Quentin.TIYANGOU\\BNavale\\scores\\test.txt";
+
+                fp = fopen(filename, "r");
+                if (fp == NULL) {
+                    printf("Could not open file %s", filename);
+                }
+                while (fgets(str, MAXCHAR, fp) != NULL)
+                    printf("%s", str);
+                fclose(fp);;//affiche le tableau des scores
+                printf("\n\n");
                 break;
 
                 case 4:
                     printf("identification(in progress)");//permet au joueur de s'identifier
-
+                printf("\nEntrez un Nom:\n");
+                scanf("%s", &playername);
                 break;
 
                 case 5:
                     printf("fermer (in progress)");//ferme le programme
                 printf("Voulez-vous quitter?\n"
-                       "oui =1 / non =0");
+                       "oui =5 / non =0");
                 emptyBuffer();
                 scanf("&d", &end);
+
                 break;
 
                 default:
 
                     printf("Erreur! veuillez reessayer!\n");
 
-                erreur = 1;//if value false back to player selection
                 break;
 
             }
 
-
         }
 
-    } while (end = 0);
+    } while (end = 5);
+
+
 }
+
