@@ -1,0 +1,247 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include <windows.h>
+#include <stdbool.h>
+
+#pragma execution_character_set("utf-8")
+
+
+void emptyBuffer() {
+    int c = 0;
+    while (c != '\n' && c != EOF) {
+        c = getchar();
+    }
+}
+
+
+int selectionplayer, playername;//setting variables
+
+int end = 0;//variables
+bool verifycontent = false;
+int grillep[10][10];
+int grille_boat[10][10];
+int truecoordx = 0, coordy;
+char coordx = '0';
+
+
+void tbs() {
+    printf("\nVoici le Tableau des score!\n\n");
+
+    FILE *fp;
+    char str[MAXCHAR];
+    char *filename = "c:\\users\\Quentin.TIYANGOU\\BNavale\\scores\\test.txt";
+
+    fp = fopen(filename, "r");
+    if (fp == NULL) {
+        printf("Could not open file %s", filename);
+    }
+    while (fgets(str, MAXCHAR, fp) != NULL)
+        printf("%s", str);
+    fclose(fp);;//affiche le tableau des scores
+    printf("\n\n");
+}
+
+void instructions() {
+    printf("\nentrer une coordonnée comme suit: <lettre minuscule> enter <numéro> pour tirer."
+           "\nle joueur gagne quand les 4 bateaux sont coulés");
+    printf("\nretourner au menu =0\n"
+           "commencer une partie=1\n"
+           "quitter =8\n");
+    emptyBuffer();
+    scanf("&d", &end);
+}
+
+void touche() {
+    if (grille_boat[truecoordx][coordy] != 0) { printf("touché\n"); } else { printf("plouf"); }
+    if (grille_boat[truecoordx][coordy] == 0) { grille_boat[coordx][coordy] + 4; }
+    else if (grille_boat[truecoordx][coordy] != 0) {
+        grillep[truecoordx][coordy] + 6;
+    }
+
+}
+
+int randgrille() {
+    int grillerand;
+    time_t t;
+    srand((unsigned) time(&t));
+
+
+    grillerand = rand() % 4 + 1;
+
+
+    FILE *fichier = NULL;
+
+
+    switch (grillerand) {
+
+        case 1:
+            fichier = fopen("grilles/grille1.txt", "r");
+            break;
+        case 2:
+            fichier = fopen("grilles/grille2.txt", "r");
+            break;
+        case 3:
+            fichier = fopen("grilles/grille3.txt", "r");
+            break;
+        case 4:
+            fichier = fopen("grilles/grille4.txt", "r");
+            break;
+        default:
+            system("exit");
+    }
+}
+
+void initialisation() {
+
+    for (int line = 0; line < 10; ++line) {
+        for (int column = 0; column < 10; ++column) {
+            grille_boat[line][column] = 0;
+        }
+    }
+    // randgrille();
+    grille_boat[0][0] = 1;
+
+}
+
+void display() {
+    initialisation();
+
+    //create the grid
+    for (int line = 0; line < 10; ++line) {
+        for (int column = 0; column < 10; ++column) {
+            grillep[line][column] = 0;
+        }
+    }
+
+
+    //display the grid
+    printf("    A  B  C  D  E  F  G  H  I  J\n");
+
+    for (int line = 0; line < 10; ++line) {
+        printf("%d ", line);
+        for (int column = 0; column < 10; ++column) {
+            printf("%3d", grillep[line][column]);
+            switch (grille_boat[line][column]) {
+                case 4:
+                    printf("-");
+                    break;
+                case 7:
+                    printf("/");
+                    break;
+                    // case 10:
+                    printf("X");
+                    break;
+            }
+        }
+        printf("\n");
+
+    }
+
+
+}
+
+void play() {
+    int compteur = 0;
+    for (int i = 0; i <= 20; ++i) {
+
+        system("cls");
+        printf("%d tours restants sur 20\n", &compteur);
+        display();
+
+
+        do {
+            emptyBuffer();
+            printf("\nentrez une coordonnée (lettre) en minuscule.\n");
+            scanf("%c", &coordx);
+            truecoordx = coordx - 'a';
+            if (truecoordx >= 0 && truecoordx <= 9) {
+                verifycontent = true;
+                break;
+            } else {
+                verifycontent = false;
+                printf("\ninsérez un coordonnée valide en minuscule.\n");
+            }
+
+        } while (verifycontent == false);
+
+        do {
+            verifycontent = false;
+            printf("\nentrez une coordonnée en numero.\n");
+            scanf("%d", &coordy - 1);
+            if (coordy >= 0 && coordy <= 9) {
+                verifycontent = true;
+            } else {
+                printf("\ninsérez un coordonnée valide.\n");
+                verifycontent = false;
+
+            }
+        } while (verifycontent == false);
+        touche();
+        compteur++;
+    }
+}
+
+
+void main() {
+
+    int end = 0;//variables
+
+    SetConsoleOutputCP(65001);//displays special characters
+    setbuf(stdout, 0);
+
+    printf("Bienvenu dans la bataille Navale %s!!\n\n",&playername);
+    while (end != 8) {
+
+        printf("selectionner:\n\n");
+
+        printf("1. Jouer\n");
+
+        printf("2. Instruction\n");
+
+        printf("3. Scores\n");
+
+        printf("4. S'enrengistrer\n");
+
+        printf("5. quitter\n");
+        scanf("%d", &selectionplayer); //take player selection
+        system("cls");//clears console
+
+        switch (selectionplayer) {//menu
+
+            case 1: {
+                play();
+                break;
+
+                case 2:
+                    instructions();
+                break;
+
+                case 3:
+                    tbs();
+                break;
+
+                case 4:
+                    printf("entrer un nom:\n");
+                scanf("%s", &playername);
+                break;
+
+                case 5:
+                    printf("êtes-vous sûre?\n"
+                           "oui=8/ non =0\n");
+                scanf("%d", &end);
+                break;
+
+                default:
+                    printf("Erreur! veuillez reessayer!\n");
+                break;
+
+            }
+
+        }
+
+    }
+
+
+}
