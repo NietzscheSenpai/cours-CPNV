@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <windows.h>
+#include <stdbool.h>
 
 
 #pragma execution_character_set("utf-8")
@@ -36,7 +37,22 @@ void emptyBuffer() {
 int selectionplayer, erreur, playername;//setting variables
 
 int choixlettre = '0', end = 0;//variables
+void writelog() {
+    FILE *fp;
+    int i;
 
+    fp = fopen("C:\\user\\Quentin.TIYANGOU\\Desktop\\MA-20\\body\\log", "w");
+
+    /* write 10 lines of text into the file stream*/
+    for (i = 0; i < 10; i++) {
+        fprintf(fp, "This is line %d\n", i + 1);
+    }
+
+    /* close the file*/
+    fclose(fp);
+
+
+}
 
 //fonctions
 int letter() {
@@ -59,10 +75,10 @@ void endgame(int grille[10][10]) {
 
             }
         }
-        for (int i = 0; i <= 9; ++i) { //assignation de valeur à la grille
-            for (int j = 0; j <= 9; ++j) {if (grille[i][j]== 0 || 105)
-                printf("gg u won");
-
+        for (int i = 0; i <= 9; ++i) {
+            for (int j = 0; j <= 9; ++j) {
+                if (grille[i][j] == 0 || 105)
+                    printf("gg u won\n");
 
 
             }
@@ -81,17 +97,15 @@ void affichage(int grille[10][10]) {
     system("cls");
     printf("      A  B  C  D  E  F  G  H  I  J  ");
 
-    for (int i = 0; i <= 9; i++) {//numbers axis y
+    for (int i = 0; i < 10; i++) {//numbers axis y
 
         printf("\n%5.d", i + 1);
 
 
-        for (int l = 0; l <= 9; ++l) {//displays the grid
-            if (grille[i][l] < 10) {
-                printf(" 0 ");
-            }
-
+        for (int l = 0; l < 10; ++l) {//displays the grid
+            printf("%5.d", grille[i][l]);
         }
+
 
     }
 
@@ -125,13 +139,13 @@ void play(int grille[10][10]) {
         for (int i = 0; i <= 9; ++i) { //assignation de valeur à la grille
             for (int j = 0; j <= 9; ++j) {
                 switch (grille[Choixlettre][Choixchiffre]) {
-                    case 105: printf("touché");
+                    case 105:
+                        printf("touché");
                         break;
                     case 0:
                         printf("plouf");
 
                 }
-
 
 
             }
@@ -156,19 +170,24 @@ void initialisation() {
         }
     }
     char curseur, container;
-    int grillerand, time = 1, nbr2 = 0, nbr1 = 0;
+    int grillerand, tiempo = 1, nbr2 = 0, nbr1 = 0;
     FILE *grillefile;
-    srand((unsigned) (time=NULL));
-    grillerand = 1 + rand() % 4;
+    srand(time(0));
+    grillerand = rand() % 4 + 1;//chooses a random array between the 4 below
     switch (grillerand) {
         case 1:
-
-            //  grillefile =fopen( chemin du file,"r") ;
+            grillefile = fopen("../grille/grille1.txt", "r");
 
 
             break;
         case 2:
-
+            grillefile = fopen("../grille/grille2.txt", "r");
+            break;
+        case 3:
+            grillefile = fopen("../grille/grille3.txt", "r");
+            break;
+        case 4:
+            grillefile = fopen("../grille/grille4.txt", "r");
             break;
     }//grille
     if (grillefile != NULL) {
@@ -177,14 +196,17 @@ void initialisation() {
             if (curseur != '-') {
                 container = curseur - '0';
                 nbr2 - container;
-                if (time % 2 != 1) {
+                if (tiempo % 2 != 1) {
                     grille[nbr1][nbr2] = 5;
                 }
-                time++;
+                tiempo++;
                 nbr1 = container;
             }
         } while (!feof(grillefile));
         fclose(grillefile);
+    } else
+    {
+        printf("erreur grillle");
     }
     fclose(grillefile);
     affichage(grillefile);
@@ -255,6 +277,7 @@ void main() {
                 case 4:
                     printf("entrer un nom:\n");
                 scanf("%s", &playername);
+
                 break;
 
                 case 5:
