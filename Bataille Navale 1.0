@@ -19,7 +19,7 @@ void emptyBuffer() {
 int selectionplayer, playername;//setting variables
 
 int end = 0;//variables
-bool verifycontent = false;
+bool verifycontent = false, victorycondition = true;
 int grillep[10][10];
 int grille_boat[10][10];
 int truecoordx = 0, coordy;
@@ -55,10 +55,27 @@ void instructions() {
 
 void touche() {
     if (grille_boat[truecoordx][coordy] != 0) { printf("touché\n"); } else { printf("plouf"); }
-    if (grille_boat[truecoordx][coordy] == 0) { grille_boat[coordx][coordy] + 4; }
+    if (grille_boat[truecoordx][coordy] == 0) { grille_boat[coordx][coordy] = 4; }
     else if (grille_boat[truecoordx][coordy] != 0) {
-        grillep[truecoordx][coordy] + 6;
+        grille_boat[truecoordx][coordy] = 7;
     }
+
+}
+
+void victory() {
+
+
+    victorycondition = true;
+    for (int line = 0; line < 10; ++line) {
+        printf("%d ", line);
+        for (int column = 0; column < 10; ++column) {
+            printf("%3d", grille_boat[line][column]);
+            if (grille_boat[line][column] = 1) {
+                victorycondition = false;
+            }
+        }
+    }
+    printf("\n");
 
 }
 
@@ -68,7 +85,7 @@ int randgrille() {
     srand((unsigned) time(&t));
 
 
-    grillerand = rand() % 4 + 1;
+    grillerand = rand() % 3 + 1;
 
 
     FILE *fichier = NULL;
@@ -77,16 +94,13 @@ int randgrille() {
     switch (grillerand) {
 
         case 1:
-            fichier = fopen("grilles/grille1.txt", "r");
+            fichier = fopen("C:\\Users\\Quentin.TIYANGOU\\Desktop\\grilles\\grille2", "r");
             break;
         case 2:
-            fichier = fopen("grilles/grille2.txt", "r");
+            fichier = fopen("C:\\Users\\Quentin.TIYANGOU\\Desktop\\grilles\\grille1", "r");
             break;
         case 3:
-            fichier = fopen("grilles/grille3.txt", "r");
-            break;
-        case 4:
-            fichier = fopen("grilles/grille4.txt", "r");
+            fichier = fopen("C:\\Users\\Quentin.TIYANGOU\\Desktop\\grilles\\grille3", "r");
             break;
         default:
             system("exit");
@@ -100,12 +114,12 @@ void initialisation() {
             grille_boat[line][column] = 0;
         }
     }
-    // randgrille();
+    randgrille();
     grille_boat[0][0] = 1;
 
 }
 
-void display() {
+void create() {
     initialisation();
 
     //create the grid
@@ -123,33 +137,44 @@ void display() {
         printf("%d ", line);
         for (int column = 0; column < 10; ++column) {
             printf("%3d", grillep[line][column]);
+
+        }
+        printf("\n");
+
+    }
+}
+
+void display() {
+    printf("    A  B  C  D  E  F  G  H  I  J\n");
+
+    for (int line = 0; line < 10; ++line) {
+        printf("%d ", line);
+        for (int column = 0; column < 10; ++column) {
+            printf("%3d", grillep[line][column]);
             switch (grille_boat[line][column]) {
                 case 4:
-                    printf("-");
+                    grille_boat[line][column] = 4;
                     break;
                 case 7:
-                    printf("/");
+                    grille_boat[line][column] = 7;
                     break;
-                    // case 10:
-                    printf("X");
-                    break;
+
             }
         }
         printf("\n");
 
     }
-
-
 }
 
 void play() {
-    int compteur = 0;
+    create();
+    int compteur = 20;
     for (int i = 0; i <= 20; ++i) {
 
         system("cls");
-        printf("%d tours restants sur 20\n", &compteur);
-        display();
+        printf("%d tours restants sur 20\n", compteur);
 
+        display();
 
         do {
             emptyBuffer();
@@ -179,7 +204,7 @@ void play() {
             }
         } while (verifycontent == false);
         touche();
-        compteur++;
+        compteur--;
     }
 }
 
@@ -191,7 +216,7 @@ void main() {
     SetConsoleOutputCP(65001);//displays special characters
     setbuf(stdout, 0);
 
-    printf("Bienvenu dans la bataille Navale %s!!\n\n",&playername);
+    printf("Bienvenu dans la bataille Navale !!\n\n");
     while (end != 8) {
 
         printf("selectionner:\n\n");
