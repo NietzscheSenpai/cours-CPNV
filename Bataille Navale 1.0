@@ -1,4 +1,23 @@
 
+/**
+
+* \file      main.c
+
+* \author    Tiyangou Quentin
+
+* \version   <1.0>
+
+* \date      <23-01-2021>
+
+* \brief     <bataille navale vers 1.0>
+
+*
+
+* \details    <modification de la bataille navale>
+
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -25,13 +44,63 @@ int grille_boat[10][10];
 int truecoordx = 0, coordy;
 char coordx = '0';
 
+logwriteplayerselect() {
+
+    FILE *fp;
+    int i;
+    /* open the file for writing*/
+    fp = fopen("C:\\Users\\reiks\\CLionProjects\\bataille navale\\cmake-build-debug\\CMakeFiles\\log\\log1",
+               "w");
+    char buff[20];
+    struct tm *sTm;
+
+    time_t now = time(0);
+    sTm = gmtime(&now);
+
+    strftime(buff, sizeof(buff), "%Y-%m-%d %H:%M:%S", sTm);
+    fprintf(fp, "%s %s\n", buff, " %d ", selectionplayer);
+
+
+
+    /* close the file*/
+    fclose(fp);
+    return 0;
+
+
+}
+
+logwritecoord() {
+
+
+    FILE *fp;
+    int i;
+    /* open the file for writing*/
+    fp = fopen("C:\\Users\\reiks\\CLionProjects\\bataille navale\\cmake-build-debug\\CMakeFiles\\log\\log1",
+               "w");
+    char buff[20];
+    struct tm *sTm;
+
+    time_t now = time(0);
+    sTm = gmtime(&now);
+
+    strftime(buff, sizeof(buff), "%Y-%m-%d %H:%M:%S", sTm);
+    fprintf(fp, "%s %s\n", buff, " %d %d", coordx, coordy);
+
+
+
+    /* close the file*/
+    fclose(fp);
+    return 0;
+
+
+}
 
 void tbs() {
     printf("\nVoici le Tableau des score!\n\n");
 
     FILE *fp;
     char str[MAXCHAR];
-    char *filename = "c:\\users\\Quentin.TIYANGOU\\BNavale\\scores\\test.txt";
+    char *filename = "C:\\Users\\reiks\\CLionProjects\\bataille navale\\cmake-build-debug\\CMakeFiles\\scores\\scorefile";
 
     fp = fopen(filename, "r");
     if (fp == NULL) {
@@ -54,10 +123,12 @@ void instructions() {
 }
 
 void touche() {
+    logwritecoord();
     if (grille_boat[truecoordx][coordy] != 0) { printf("touché\n"); } else { printf("plouf"); }
-    if (grille_boat[truecoordx][coordy] == 0) { grille_boat[coordx][coordy] = 4; }
-    else if (grille_boat[truecoordx][coordy] != 0) {
-        grille_boat[truecoordx][coordy] = 7;
+    if (grille_boat[truecoordx][coordy] == 0) {
+        grille_boat[coordx][coordy] = 4; //&& grillep[coordx][coordy] == 4;
+    } else if (grille_boat[truecoordx][coordy] != 0) {
+        grille_boat[truecoordx][coordy] = 7; //&& grille_boat[truecoordx][coordy] == 7;
     }
 
 }
@@ -75,8 +146,38 @@ void victory() {
             }
         }
     }
-    printf("\n");
+    if (victorycondition != true) {
 
+        printf("GG %s U WON!", playername);
+        FILE *fp;
+        int i;
+        /* open the file for writing*/
+        fp = fopen(
+                "C:\\Users\\reiks\\CLionProjects\\bataille navale\\cmake-build-debug\\CMakeFiles\\scores\\scorefile",
+                "w");
+
+        fprintf(fp, "%s scored 1000 point.\n", playername);
+
+        /* close the file*/
+        fclose(fp);
+
+
+    } else {
+        printf("Meh %s U LOST!", playername);
+
+        FILE *fp;
+        int i;
+        /* open the file for writing*/
+        fp = fopen(
+                "C:\\Users\\reiks\\CLionProjects\\bataille navale\\cmake-build-debug\\CMakeFiles\\scores\\scorefile",
+                "w");
+
+        fprintf(fp, "%s scored 0 point.\n", playername);
+
+        /* close the file*/
+        fclose(fp);
+    }
+    printf("\n");
 }
 
 int randgrille() {
@@ -232,7 +333,7 @@ void main() {
         printf("5. quitter\n");
         scanf("%d", &selectionplayer); //take player selection
         system("cls");//clears console
-
+        logwriteplayerselect();
         switch (selectionplayer) {//menu
 
             case 1: {
